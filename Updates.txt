@@ -1,0 +1,12 @@
+I started out trying to install the visual library, SFML. This went poorly.
+So, while I waited for a different solution/ motivation to fix the issue, I decided to start reconstructing the rest of the program.
+
+I started with a very simple system, with everything defined in one file that let two agents play a game of prisoners dilemma.
+
+My next step will be to seperate the game, agents, and main. done
+
+now I need to build the hash function and the history class.
+Hash and dehash added, will eventually make the hash flexible, instead of hard coded.
+
+I think I finished history? like all of it?
+I also think I finished the game class as well.
