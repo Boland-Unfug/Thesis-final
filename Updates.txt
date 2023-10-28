@@ -10,3 +10,6 @@ Hash and dehash added, will eventually make the hash flexible, instead of hard c
 
 I think I finished history? like all of it?
 I also think I finished the game class as well.
+poggers, I can now do a lot of agents and a lot of rounds, and do data on it.
+Now I need to add the tit for tat class.
+I also need to increase the hash.

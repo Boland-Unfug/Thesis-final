@@ -1,8 +1,32 @@
 #include <iostream>
 
+#pragma once
+
 class Game
 {
+private:
+    Game()
+    {
+        std::cout << "Game constructor" << std::endl;
+    }
+
+    ~Game()
+    {
+        std::cout << "Game destructor" << std::endl;
+    }
+
 public:
+
+    static Game &getInstance()
+    {
+        static Game instance;
+        return instance;
+    }
+
+    Game(Game const &) = delete;
+    void operator=(Game const &) = delete;
+
+    //TODO make several of these const functions
     std::pair<int, int> get_scores(int player1, int player2)
     {
         static const std::pair<int, int> lookup_table[2][2] = {
@@ -19,6 +43,15 @@ public:
         return lookup_table[game_state];
     }
 
+    std::pair<int, int> get_moves(int game_state)
+    {
+        static const std::pair<int, int> lookup_table[4] = {
+            {1, 1},
+            {1, 0},
+            {0, 1},
+            {0, 0}};
+        return lookup_table[game_state];
+    }
     // I CAN ONLY USE THIS BECAUSE I KNOW THE ORDER OF THE AGENTS, SO I DON'T NEED TO STORE WHICH AGENT HAS WHICH SCORE
     int get_state(int player1, int player2)
     {
