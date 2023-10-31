@@ -4,10 +4,12 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 #include "Agent.hpp"
 #include "Game.hpp"
 #include "History.hpp"
-#include "StrategyInit.cpp"
+#include "GameStrategies/GameStrategyList.hpp"
+// #include "StrategyInitializer.cpp"
 
 
 int main()
@@ -16,107 +18,88 @@ int main()
     // Initailize history
     History& history = History::getInstance();
 
-    // Initialize strategies
-    StrategyInitializer* strategy_initializer = new StrategyInitializer();
+    const int num_agents = 2;
+    const int num_rounds = 2;
 
-    std::string gamestrategies = strategy_initializer->getStrategies("GameStrategies");
-    std::string movementstrategies = strategy_initializer->getStrategies("MovementStrategies");
+    // Initialize 100 agents
+    Agent *agents[num_agents];
+    for (int i = 0; i < num_agents; i++)
+    {
+        agents[i] = new Agent(i);
 
-    // make a map of strategies, where the key is the name of the strategy and the value is a pointer to the strategy
-    std::unordered_map<std::string, GameStrategy *> game_strategy_map = initialize_GameStrategies(gamestrategies);
-    
+        //make a case for cooperate and tit for tat
+        switch (i % 2)
+        {
+            case 0:
+                agents[i]-> set_game_strategy(new Defect);
+                break;
+            case 1:
+                agents[i]-> set_game_strategy(new DumbTitForTat);
+                break;
+        }
 
-    //
-    // // Initialize strategies
-    // // std::unordered_map<std::string, MovementStrategy *> movement_strategy_map = initialize_MovementStrategies();
-    // // StrategiesList* strategy_map = new StrategiesList();
+        
 
-    // std::srand(std::time(nullptr));
+        // switch (i % 4)
+        // {
+        // case 0:
+        //     agents[i]->set_game_strategy(new Cooperate());
+        //     break;
+        // case 1:
+        //     agents[i]->set_game_strategy(new Defect());
+        //     break;
+        // case 2:
+        //     agents[i]->set_game_strategy(new Random());
+        //     break;
+        // case 3:
+        //     agents[i]->set_game_strategy(new TitForTat());
+        //     break;
+        // }
+    }
 
-    
+    // Initialize game
+    Game &game = Game::getInstance();
 
-    // const int num_agents = 10000;
-    // const int num_rounds = 1000000;
+    for (int i = 0; i < num_rounds; i++)
+    {
+        int player1 = rand() % num_agents;
+        int player2 = rand() % num_agents;
+        while (player1 == player2)
+        { // ensure that the two players are different
+            player2 = rand() % num_agents;
+        }
+        int state = game.play_game(agents[player1]->play(), agents[player2]->play());
 
-    // // Initialize 100 agents
-    // Agent *agents[num_agents];
-    // for (int i = 0; i < num_agents; i++)
-    // {
-    //     agents[i] = new Agent(i);
-    //     if (i % 2 == 0)
-    //     {
-    //         agents[i]->set_game_strategy(strategy_map["Cooperate"]);
-    //     }
-    //     else
-    //     {
-    //         agents[i]->set_game_strategy(strategy_map["Defect"]);
-    //     }
-    // }
+        // get the scores
+        std::pair<int, int> scores = game.get_scores(state);
+        // std::cout << "Player " << player1 << " played " << agents[player1]->play() << std::endl;
+        agents[player1]->add_score(scores.first);
+        // std::cout << "Player" << player1 << " score: " << agents[player1]->get_score() << std::endl;
+        agents[player2]->add_score(scores.second);
 
-    // // Initialize game
-    // Game game;
 
-    // for (int i = 0; i < num_rounds; i++)
-    // {
-    //     int player1 = rand() % num_agents;
-    //     int player2 = rand() % num_agents;
-    //     while (player1 == player2)
-    //     { // ensure that the two players are different
-    //         player2 = rand() % num_agents;
-    //     }
-    //     int state = game.play_game(agents[player1]->play(), agents[player2]->play());
+        // hash
+        int hashed = history.hash(i, player1, player2);
 
-    //     // get the scores
-    //     std::pair<int, int> scores = game.get_scores(state);
+        // add to history
+        history.add(hashed, state);
+    }
 
-    //     // hash
-    //     int hashed = history.hash(0, player1, player2);
+    // make an array of agent scores
+    int agent_scores[num_agents];
+    for (int i = 0; i < num_agents; i++)
+    {
+        agent_scores[i] = agents[i]->get_score();
+    }
 
-    //     // add to history
-    //     history.add(hashed, state);
-    // }
+    // sort the array from highest to lowest
+    std::sort(agent_scores, agent_scores + num_agents, std::greater<int>());
 
-    // // calculate each agents scores
-    // int final_scores[num_agents];
-    // for (int i = 0; i < num_agents; i++)
-    // {
-    //     final_scores[i] = 0;
-    // }
-
-    // std::vector<int> keys;
-
-    // // Iterate over the map and extract the keys
-    // for (const auto &pair : history.history)
-    // {
-    //     keys.push_back(pair.first);
-    // }
-
-    // // Get the score from each game
-    // for (int i = 0; i < keys.size(); i++)
-    // {
-    //     int player1 = keys[i] >> 16; // These should be a variable TODO
-    //     int player2 = keys[i] & 0xFFFF;
-    //     int state = history.get(keys[i]);
-    //     std::pair<int, int> scores = game.get_scores(state);
-    //     final_scores[player1] += scores.first;
-    //     final_scores[player2] += scores.second;
-    // }
-
-    // // print the top 10 scores, and their games played
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     int max_score = 0;
-    //     int max_index = 0;
-    //     for (int j = 0; j < num_agents; j++)
-    //     {
-    //         if (final_scores[j] > max_score)
-    //         {
-    //             max_score = final_scores[j];
-    //             max_index = j;
-    //         }
-    //     }
-    //     std::cout << "Agent " << max_index << " scored " << max_score << std::endl;
-    //     final_scores[max_index] = 0;
-    // }
+    // print the array
+    std::cout << num_agents << " agents" << std::endl;
+    for (int i = 0; i < num_agents; i++)
+    {
+        std::cout << agent_scores[i] << std::endl;
+    }
     return 0;
 }

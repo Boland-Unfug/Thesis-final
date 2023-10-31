@@ -1,5 +1,5 @@
 #pragma once
-#include "MovementStrategies.hpp"
+#include "../Strategies.hpp"
 
 class RandomMovementStrategy : public MovementStrategy
 {

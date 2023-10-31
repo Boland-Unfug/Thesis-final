@@ -63,6 +63,14 @@ public:
         recent_history[player2] = hashed;
     }
     
+    std::unordered_map<int, int> get() const {
+        return history;
+    }
+
+    std::unordered_map<int, int> get_recent() const {
+        return recent_history;
+    }
+    
     int get(int hash) const
     {
         auto search = history.find(hash); // get an iterator (position in map) to the element
@@ -70,29 +78,31 @@ public:
         {
             return search->second; //second is the end of the map
         }
-        std::cout << "Not found" << std::endl; // return -1 if not found
+        //std::cout << "Not found" << std::endl; // return -1 if not found
         return -1;
     }
 
     int get_recent(int agent_id) const
     {
-        auto search = recent_history.find(agent_id); // get an iterator (position in map) to the element
+        // I can use the agent_id as the key, so I can just check the map
+        auto search = recent_history.find(agent_id);
         if (search != recent_history.end())
         {
-            return search->second; //second is the end of the map
+            return search->second;
         }
-        std::cout << "Not found" << std::endl; // return -1 if not found
+        //std::cout << "Not played" << std::endl;
         return -1;
+
     }
 
-    int hash(int round, int player1, int player2)
+    unsigned int hash(int round, int player1, int player2)
     {
-        // 65,000 Agents max
-        // 4.2 Billion rounds max
-        return (round << 8) | (player1 << 4) | player2;
+        // 15 Agents max
+        //   256 rounds max
+        return (round << 16) | (player1 << 8) | player2;
     }
 
-    int dehash(int hash)
+    int dehash(unsigned int hash)
     {
         int round = hash >> 16;
         int player1 = (hash >> 8) & 0xFF;

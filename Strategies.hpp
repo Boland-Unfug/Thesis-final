@@ -3,20 +3,14 @@
 
 #pragma once
 
-class Strategy
+class GameStrategy
 {
 public:
-    virtual int do_strategy() = 0; // Pure virtual function
+    virtual int do_tactic(int id) = 0;
 };
 
-class GameStrategy : public Strategy
+class MovementStrategy
 {
 public:
-    virtual int do_tactic(int id) = 0; // Pure virtual function
-};
-
-class MovementStrategy : public Strategy
-{
-public:
-    virtual void do_move() = 0; // Pure virtual function
+    virtual void do_move() = 0;
 };
