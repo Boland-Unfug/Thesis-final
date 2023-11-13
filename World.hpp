@@ -1,95 +1,103 @@
-#include "Agent.hpp"
-#include "Solver.hpp"
+// #include "Solver.hpp"
+// #include "AgentBody.hpp"
+// #include "Game.hpp"
+// #include <vector>
+// #include <iostream>
+// #include <math.h>
 
-class World
-{
-private:
-    int round;
-    int num_agents;
-    int agent_size = 1;
-    int num_rounds;
+// class World
+// {
+// private:
+//     int round;
+//     int num_agents;
+//     int agent_size = 1;
+//     int num_rounds;
 
-    Solver &solver = Solver::getInstance();
+//     Solver &solver = Solver::getInstance();
 
-    std::vector<Agent*> agents;
-
-
-    int grid_size = 10;
+//     std::vector<Agent*> agents;
 
 
-public:
-    World()
-    {
-        std::cout << "World constructor" << std::endl;
-    }
+//     int grid_size = 10;
 
-    ~World()
-    {
-        std::cout << "World destructor" << std::endl;
-    }
 
-    // Setters
-    void set_round(int round)
-    {
-        this->round = round;
-    }
+// public:
+//     World()
+//     {
+//         std::cout << "World constructor" << std::endl;
+//     }
 
-    void set_num_agents(int num_agents)
-    {
-        this->num_agents = num_agents;
-    }
+//     ~World()
+//     {
+//         std::cout << "World destructor" << std::endl;
+//     }
 
-    void set_num_rounds(int num_rounds)
-    {
-        this->num_rounds = num_rounds;
-    }
+//     // Setters
+//     void set_round(int round)
+//     {
+//         this->round = round;
+//     }
 
-    void set_agent_size(int agent_size)
-    {
-        this->agent_size = agent_size;
-    }
+//     void set_num_agents(int num_agents)
+//     {
+//         this->num_agents = num_agents;
+//     }
 
-    void set_agents(std::vector<Agent*> agents, int num_agents)
-    {
-        this->agents = agents;
-        this->num_agents = num_agents;
-    }
+//     void set_num_rounds(int num_rounds)
+//     {
+//         this->num_rounds = num_rounds;
+//     }
 
-    void add_agents (std::vector<Agent*> agents, int agent_count)
-    {
-        for (int i = 0; i < agent_count; i++)
-        {
-            this->agents.push_back(agents[i]);
-            num_agents++;
-        }
-    }
+//     void set_agent_size(int agent_size)
+//     {
+//         this->agent_size = agent_size;
+//     }
 
-    void add_agent(Agent *agent)
-    {
-        this->agents.push_back(agent);
-        num_agents++;
-    }
+//     void set_agents(std::vector<Agent*> agents, int num_agents)
+//     {
+//         this->agents = agents;
+//         this->num_agents = num_agents;
+//     }
 
-    void set_grid_size(int grid_size)
-    {
-        this->grid_size = grid_size;
-    }
+//     void add_agents (std::vector<Agent*> agents, int agent_count)
+//     {
+//         for (int i = 0; i < agent_count; i++)
+//         {
+//             this->agents.push_back(agents[i]);
+//             num_agents++;
+//         }
+//     }
 
-    void game_loop()
-    {
-        // place the agents on the map, using their ID as the index
-        for (int i = 0; i < num_agents; i++)
-        {
-            agents[i]->set_position(i % 10, floor(i / 10));
-        }
+//     void add_agent(Agent *agent)
+//     {
+//         this->agents.push_back(agent);
+//         num_agents++;
+//     }
 
-        for (int i = 0; i < num_rounds; i++)
-        {
-            // trigger movement for each agent
-            for (int j = 0; j < num_agents; j++)
-            {
-                // agents[j]->move(grid, grid_size);
-            }
-        }
-    }
-};
+//     void set_grid_size(int grid_size)
+//     {
+//         this->grid_size = grid_size;
+//     }
+
+    
+//     void game_loop()
+//     {
+//         // place the agents on the map, using their ID as the index
+//         for (int i = 0; i < num_agents; i++)
+//         {
+//             agents[i]->set_position(i % 10, floor(i / 10));
+//         }
+
+//         //Print the initial positions of the agents
+        
+        
+//         for (int i = 0; i < num_rounds; i++)
+//         {
+//             // trigger movement for each agent
+//             for (int j = 0; j < num_agents; j++)
+//             {
+//                 // agents[j]->move(grid, grid_size);
+//             }
+//         }
+//     }
+// };

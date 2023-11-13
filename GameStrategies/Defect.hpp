@@ -7,4 +7,8 @@ public:
     {
         return 0;
     }
+    std::string toString() const
+    {
+        return "Defect";
+    }
 };

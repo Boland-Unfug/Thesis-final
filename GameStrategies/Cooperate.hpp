@@ -7,4 +7,8 @@ public:
     {
         return 1;
     }
+    std::string toString() const
+    {
+        return "Cooperate";
+    }
 };
